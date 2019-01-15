@@ -27,7 +27,9 @@ class Product extends Component {
               <NumericInput
                 id={variation.code}
                 value={this.state.quote[variation.code] || 0}
-                onValueChange={value => this.update(variation.code, value)}
+                onValueChange={(_number, value) =>
+                  this.update(variation.code, value)
+                }
                 min={0}
                 selectAllOnFocus
               />
@@ -39,12 +41,18 @@ class Product extends Component {
   }
 
   update(code, value) {
-    this.setState({
-      quote: {
-        ...this.state.quote,
-        [code]: value
+    this.setState(
+      {
+        quote: {
+          ...this.state.quote,
+          [code]: value
+        }
+      },
+      () => {
+        const callback = this.props.onValueChange;
+        if (callback) callback(this.state.quote);
       }
-    });
+    );
   }
 }
 
@@ -56,7 +64,8 @@ Product.propTypes = {
       name: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired
     })
-  )
+  ),
+  onValueChange: PropTypes.func
 };
 
 Product.defaultProps = {

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import yaml from "js-yaml";
-import Product from "./components/Product";
+import QuoteForm from "./components/QuoteForm";
 
 const PRODUCTS = `
 - code: tomate
@@ -36,31 +35,8 @@ const PRODUCTS = `
 `;
 
 class Landing extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      number: 0
-    };
-  }
   render() {
-    const products = yaml.safeLoad(PRODUCTS);
-    return (
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          e.stopPropagation();
-          console.log("Stopped form propagation.");
-        }}
-      >
-        {products.map(product => (
-          <Product key={product.code} {...product} />
-        ))}
-      </form>
-    );
-  }
-  update(number) {
-    console.log(number);
-    this.setState({ number });
+    return <QuoteForm products={PRODUCTS} />;
   }
 }
 
