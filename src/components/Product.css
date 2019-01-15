@@ -1,0 +1,5 @@
+.Product-variations {
+    display: grid;
+    grid-gap: 2em;
+    grid-template-columns: repeat(auto-fill, 250px);
+}
