@@ -37,6 +37,7 @@ class QuoteForm extends Component {
     const products = yaml.safeLoad(this.props.products);
     return (
       <form
+        className="QuoteForm"
         onSubmit={e => {
           e.preventDefault();
           e.stopPropagation();
@@ -44,13 +45,16 @@ class QuoteForm extends Component {
         }}
       >
         <h2>Pedido</h2>
-        {products.map(product => (
-          <Product
-            key={product.code}
-            {...product}
-            onValueChange={this.updateQuote.bind(this)}
-          />
-        ))}
+        <div className="QuoteForm-products">
+          {products.map(product => (
+            <Product
+              key={product.code}
+              {...product}
+              onValueChange={this.updateQuote.bind(this)}
+            />
+          ))}
+        </div>
+        <hr />
         <strong>Total: ${this.total().toLocaleString()}</strong>
       </form>
     );
