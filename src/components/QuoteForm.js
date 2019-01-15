@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import yaml from "js-yaml";
 import Product from "./Product";
+import { Button, Intent } from "@blueprintjs/core";
+import "./QuoteForm.css";
 
 class QuoteForm extends Component {
   constructor(props) {
@@ -54,8 +56,14 @@ class QuoteForm extends Component {
             />
           ))}
         </div>
-        <hr />
-        <strong>Total: ${this.total().toLocaleString()}</strong>
+        <div className="QuoteForm-summary">
+          <strong>Total: ${this.total().toLocaleString()}</strong>
+        </div>
+        <div className="QuoteForm-buttons">
+          <Button icon="confirm" intent={Intent.SUCCESS}>
+            Confirmar
+          </Button>
+        </div>
       </form>
     );
   }

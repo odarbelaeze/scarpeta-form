@@ -1,0 +1,10 @@
+.QuoteForm-summary {
+    margin: 2em 0;
+}
+
+.QuoteForm-buttons {
+    margin: 2em 0;
+    display: grid;
+    grid-gap: 2em;
+    grid-template-columns: repeat(auto-fill, 150px);
+}
