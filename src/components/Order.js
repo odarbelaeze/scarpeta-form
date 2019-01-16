@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import QuoteForm from "./QuoteForm";
+import Quote from "./Quote";
+import { FirebaseContext } from "../firebase";
 
 const PRODUCTS = `
 - code: tomate
@@ -35,7 +37,24 @@ const PRODUCTS = `
 `;
 
 class Landing extends Component {
+  static contextType = FirebaseContext;
+
+  state = { loading: true, order: null };
+
+  componentDidMount() {
+    this.context.currentOrder().then(query => {
+      query.onSnapshot(order => {
+        this.setState({
+          loading: false,
+          order: !!order ? order.data() : null
+        });
+      });
+    });
+  }
+
   render() {
+    if (this.state.loading) return <div>cargando...</div>;
+    if (!!this.state.order) return <Quote {...this.state.order} />;
     return <QuoteForm products={PRODUCTS} />;
   }
 }

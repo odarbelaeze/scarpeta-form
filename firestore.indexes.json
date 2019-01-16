@@ -1,0 +1,19 @@
+{
+  "indexes": [
+    {
+      "collectionId": "sales",
+      "fields": [
+        { "fieldPath": "startDate", "mode": "ASCENDING" },
+        { "fieldPath": "endDate", "mode": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionId": "sales",
+      "fields": [
+        { "fieldPath": "endDate", "mode": "ASCENDING" },
+        { "fieldPath": "startDate", "mode": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

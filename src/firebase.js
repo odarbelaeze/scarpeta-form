@@ -1,6 +1,7 @@
 import { createContext } from "react";
 import app from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
 class Firebase {
   constructor() {
@@ -16,6 +17,9 @@ class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
+    this.db = app.firestore();
+
+    this.db.settings({ timestampsInSnapshots: true });
   }
 
   isAuthenticated() {
@@ -30,6 +34,43 @@ class Firebase {
 
   logout() {
     return this.auth.signOut();
+  }
+
+  async currentSale() {
+    const now = new Date();
+    const snapshot = await this.db
+      .collection("sales")
+      .where("endDate", ">=", now)
+      .orderBy("endDate")
+      .orderBy("startDate")
+      .limit(1)
+      .get();
+    if (snapshot.empty || snapshot.docs[0].startDate <= now) {
+      console.error("No hay ventas activas");
+      return null;
+    }
+    return snapshot.docs[0];
+  }
+
+  async currentOrder() {
+    const user = this.auth.currentUser.uid;
+    const sale = await this.currentSale();
+    if (!sale) return null;
+    return this.db.collection("orders").doc(`${sale.id}/forUser/${user}`);
+  }
+
+  async createOrder({ quoted, quote, total }) {
+    const user = this.auth.currentUser.uid;
+    const sale = await this.currentSale();
+    return await this.db
+      .collection("orders")
+      .doc(`${sale.id}/forUser/${user}`)
+      .set({
+        user: this.auth.currentUser.uid,
+        quoted,
+        quote,
+        total
+      });
   }
 }
 

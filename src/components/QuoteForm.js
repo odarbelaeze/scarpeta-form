@@ -1,11 +1,15 @@
 import React, { Component } from "react";
+import { Button, Intent } from "@blueprintjs/core";
 import PropTypes from "prop-types";
 import yaml from "js-yaml";
+
+import { FirebaseContext } from "../firebase";
 import Product from "./Product";
-import { Button, Intent } from "@blueprintjs/core";
 import "./QuoteForm.css";
 
 class QuoteForm extends Component {
+  static contextType = FirebaseContext;
+
   constructor(props) {
     super(props);
     const products = yaml.safeLoad(this.props.products);
@@ -43,7 +47,7 @@ class QuoteForm extends Component {
         onSubmit={e => {
           e.preventDefault();
           e.stopPropagation();
-          console.log("Stopped form propagation.");
+          this.submitOrder();
         }}
       >
         <h2>Pedido</h2>
@@ -60,7 +64,7 @@ class QuoteForm extends Component {
           <strong>Total: ${this.total().toLocaleString()}</strong>
         </div>
         <div className="QuoteForm-buttons">
-          <Button icon="confirm" intent={Intent.SUCCESS}>
+          <Button icon="confirm" intent={Intent.SUCCESS} type="submit">
             Confirmar
           </Button>
         </div>
@@ -74,6 +78,14 @@ class QuoteForm extends Component {
         ...this.state.quote,
         ...partial
       }
+    });
+  }
+
+  submitOrder() {
+    this.context.createOrder({
+      quoted: this.state.products,
+      total: this.total(),
+      quote: this.state.quote
     });
   }
 }
