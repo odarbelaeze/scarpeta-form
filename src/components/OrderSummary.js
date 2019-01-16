@@ -3,7 +3,7 @@ import { HTMLTable } from "@blueprintjs/core";
 import { money } from "../utils";
 import "./OrderSummary.css";
 
-const Quote = ({ quoted, quote, total }) => {
+const OrderSummary = ({ quoted, quote, total }) => {
   const details = quoted.reduce((accum, product) => {
     return [
       ...accum,
@@ -53,7 +53,7 @@ const Quote = ({ quoted, quote, total }) => {
             <td colSpan={4}>
               <strong>Total</strong>
             </td>
-            <td>{money(total)}</td>
+            <td style={{ textAlign: "right" }}>{money(total)}</td>
           </tr>
         </tbody>
       </HTMLTable>
@@ -61,4 +61,4 @@ const Quote = ({ quoted, quote, total }) => {
   );
 };
 
-export default Quote;
+export default OrderSummary;

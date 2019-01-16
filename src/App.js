@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/auth/PrivateRoute";
 import AdminRoute from "./components/auth/AdminRoute";
 import Order from "./components/Order";
+import Admin from "./components/Admin";
 import NotFound from "./components/NotFound";
 import Login from "./components/auth/Login";
 import { FirebaseContext, UserContext } from "./firebase";
@@ -60,7 +61,7 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/" component={Order} />
                 <PrivateRoute exact path="/order/" component={Order} />
-                <AdminRoute exact path="/admin/" component={Licence} />
+                <AdminRoute exact path="/admin/" component={Admin} />
                 <Route exact path="/licence/" component={Licence} />
                 <Route path="/login/" component={Login} />
                 <Route component={NotFound} />

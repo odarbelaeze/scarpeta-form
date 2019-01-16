@@ -38,6 +38,15 @@ class Firebase {
     return this.auth.signOut();
   }
 
+  async activeSales() {
+    const now = new Date();
+    return this.db
+      .collection("sales")
+      .where("endDate", ">=", now)
+      .orderBy("endDate")
+      .orderBy("startDate");
+  }
+
   async currentSale() {
     const now = new Date();
     const snapshot = await this.db
@@ -59,6 +68,10 @@ class Firebase {
     const sale = await this.currentSale();
     if (!sale) return null;
     return this.db.collection("orders").doc(`${sale.id}/forUser/${user}`);
+  }
+
+  async ordersBySale(saleId) {
+    return this.db.collection(`/orders/${saleId}/forUser/`);
   }
 
   async createOrder({ quoted, quote, total }) {
