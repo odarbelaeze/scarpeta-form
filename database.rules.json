@@ -1,14 +1,10 @@
 {
   "rules": {
-    // "metadata": {
-    //   "$user_id": {
-    //     // Read access only granted to the authenticated user.
-    //     ".read": "$user_id === auth.uid",
-    //     // Write access only via Admin SDK.
-    //     ".write": false
-    //   }
-    // }
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "metadata": {
+      "$user_id": {
+        ".read": "$user_id === auth.uid",
+        ".write": false
+      }
+    }
   }
 }

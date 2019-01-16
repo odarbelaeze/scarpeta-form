@@ -4,8 +4,7 @@ const admin = require("firebase-admin");
 admin.initializeApp(functions.config().firebase);
 
 // On sign up.
-exports.processSignUp = functions.auth.user().onCreate(event => {
-  const user = event.data; // The Firebase user.
+exports.processSignUp = functions.auth.user().onCreate(user => {
   // Check if user meets role criteria.
   const admins = ["odarbelaeze@gmail.com"];
   if (user.email && admins.includes(user.email) && user.emailVerified) {

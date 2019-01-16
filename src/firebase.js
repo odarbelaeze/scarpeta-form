@@ -2,6 +2,7 @@ import { createContext } from "react";
 import app from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/database";
 
 class Firebase {
   constructor() {
@@ -18,6 +19,7 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.firestore();
+    this.rt = app.database();
 
     this.db.settings({ timestampsInSnapshots: true });
   }

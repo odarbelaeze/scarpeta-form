@@ -16,9 +16,20 @@ class App extends Component {
   state = { user: null };
 
   componentDidMount() {
-    this.authListener = this.context.auth.onAuthStateChanged(user =>
-      this.setState({ user })
-    );
+    this.authListener = this.context.auth.onAuthStateChanged(user => {
+      if (this.adminListener && this.metadataRef) {
+        this.metadataRef.off("value", this.adminListener);
+      }
+      if (user) {
+        this.metadataRef = this.context.rt.ref(
+          "metadata/" + user.uid + "/refreshTime"
+        );
+        this.adminListener = () => user.getIdToken(true);
+        this.metadataRef.on("value", this.adminListener);
+        user.getIdTokenResult().then(token => console.log(token.claims));
+      }
+      this.setState({ user });
+    });
   }
 
   componentWillUnmount() {
