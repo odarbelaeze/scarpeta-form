@@ -1,0 +1,13 @@
+.OrderSummary {
+  overflow: scroll;
+}
+
+.OrderSummary-details tr td,
+.OrderSummary-details tr th {
+  white-space: nowrap;
+}
+
+.OrderSummary-details tr td:nth-child(2),
+.OrderSummary-details tr th:nth-child(2) {
+  width: 99%;
+}

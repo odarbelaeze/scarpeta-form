@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FormGroup, NumericInput } from "@blueprintjs/core";
+import { money } from "../utils";
 import "./Product.css";
 
 class Product extends Component {
@@ -18,9 +19,7 @@ class Product extends Component {
         <div className="Product-variations">
           {variations.map(variation => (
             <FormGroup
-              label={`${variation.name} ($${variation.price.toLocaleString(
-                "es-CO"
-              )})`}
+              label={`${variation.name} (${money(variation.price)})`}
               labelFor={variation.code}
               key={variation.code}
             >

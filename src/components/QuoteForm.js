@@ -6,6 +6,7 @@ import yaml from "js-yaml";
 import { FirebaseContext } from "../firebase";
 import Product from "./Product";
 import "./QuoteForm.css";
+import { money } from "../utils";
 
 class QuoteForm extends Component {
   static contextType = FirebaseContext;
@@ -61,7 +62,7 @@ class QuoteForm extends Component {
           ))}
         </div>
         <div className="QuoteForm-summary">
-          <strong>Total: ${this.total().toLocaleString()}</strong>
+          <strong>Total: {money(this.total())}</strong>
         </div>
         <div className="QuoteForm-buttons">
           <Button icon="confirm" intent={Intent.SUCCESS} type="submit">

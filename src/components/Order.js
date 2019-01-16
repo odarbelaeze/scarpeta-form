@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import QuoteForm from "./QuoteForm";
-import Quote from "./Quote";
+import OrderSummary from "./OrderSummary";
 import { FirebaseContext } from "../firebase";
 
 const PRODUCTS = `
@@ -54,7 +54,7 @@ class Landing extends Component {
 
   render() {
     if (this.state.loading) return <div>cargando...</div>;
-    if (!!this.state.order) return <Quote {...this.state.order} />;
+    if (!!this.state.order) return <OrderSummary {...this.state.order} />;
     return <QuoteForm products={PRODUCTS} />;
   }
 }
