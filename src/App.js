@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/auth/PrivateRoute";
+import AdminRoute from "./components/auth/AdminRoute";
 import Order from "./components/Order";
+import NotFound from "./components/NotFound";
 import Login from "./components/auth/Login";
 import { FirebaseContext, UserContext } from "./firebase";
 
@@ -9,11 +11,9 @@ import "./App.css";
 
 const Licence = () => <h2>Licence</h2>;
 
-const NotFound = () => <p>Estas perdido chico?</p>;
-
 class App extends Component {
   static contextType = FirebaseContext;
-  state = { user: null };
+  state = { user: null, isAdmin: false };
 
   componentDidMount() {
     this.authListener = this.context.auth.onAuthStateChanged(user => {
@@ -26,7 +26,11 @@ class App extends Component {
         );
         this.adminListener = () => user.getIdToken(true);
         this.metadataRef.on("value", this.adminListener);
-        user.getIdTokenResult().then(token => console.log(token.claims));
+        user.getIdTokenResult().then(token => {
+          this.setState({
+            isAdmin: token && token.claims && token.claims.admin
+          });
+        });
       }
       this.setState({ user });
     });
@@ -41,9 +45,10 @@ class App extends Component {
       <UserContext.Provider
         value={{
           user: this.state.user,
+          isAuthenticated: !!this.state.user,
+          isAdmin: this.state.isAdmin,
           logOut: () => this.context.logOut(),
-          logIn: () => this.context.loginWithGoogle(),
-          isAuthenticated: () => !!this.state.user
+          logIn: () => this.context.loginWithGoogle()
         }}
       >
         <Router>
@@ -55,6 +60,7 @@ class App extends Component {
               <Switch>
                 <PrivateRoute exact path="/" component={Order} />
                 <PrivateRoute exact path="/order/" component={Order} />
+                <AdminRoute exact path="/admin/" component={Licence} />
                 <Route exact path="/licence/" component={Licence} />
                 <Route path="/login/" component={Login} />
                 <Route component={NotFound} />

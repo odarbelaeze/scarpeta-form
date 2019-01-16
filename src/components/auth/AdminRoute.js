@@ -3,26 +3,23 @@
  */
 
 import React, { Component } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { UserContext } from "../../firebase";
+import NotFound from "../NotFound";
 
-class PrivateRoute extends Component {
+class AdminRoute extends Component {
   static contextType = UserContext;
+
   render() {
     const { component: RoutedComponent, ...rest } = this.props;
     return (
       <Route
         {...rest}
         render={props =>
-          this.context.isAuthenticated ? (
+          this.context.isAdmin ? (
             <RoutedComponent {...props} />
           ) : (
-            <Redirect
-              to={{
-                pathname: "/login/",
-                search: `?next=${this.props.location.pathname}`
-              }}
-            />
+            <NotFound {...props} />
           )
         }
       />
@@ -30,6 +27,6 @@ class PrivateRoute extends Component {
   }
 }
 
-PrivateRoute.propTypes = Route.propTypes;
+AdminRoute.propTypes = Route.propTypes;
 
-export default PrivateRoute;
+export default AdminRoute;
