@@ -6,12 +6,14 @@ import React, { Component } from "react";
 import { UserContext } from "../../firebase";
 import { Redirect } from "react-router-dom";
 import { Button } from "@blueprintjs/core";
+import { parse } from "query-string";
 
 class Login extends Component {
   static contextType = UserContext;
 
   render() {
-    const from = { pathname: "/" };
+    const { next } = parse(this.props.location.search);
+    const from = { pathname: next || "/" };
     const redirectToReferer = !!this.context.user;
     if (redirectToReferer) {
       return <Redirect to={from} />;

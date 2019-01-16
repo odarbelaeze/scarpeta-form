@@ -16,14 +16,6 @@ class Firebase {
     app.initializeApp(config);
 
     this.auth = app.auth();
-    this.listenForUser();
-  }
-
-  listenForUser() {
-    this.auth.onAuthStateChanged(user => {
-      console.log("User state changed.");
-      this.user = user;
-    });
   }
 
   isAuthenticated() {
