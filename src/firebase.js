@@ -75,13 +75,15 @@ class Firebase {
   }
 
   async createOrder({ quoted, quote, total }) {
-    const user = this.auth.currentUser.uid;
+    const user = this.auth.currentUser;
     const sale = await this.currentSale();
     return await this.db
       .collection("orders")
-      .doc(`${sale.id}/forUser/${user}`)
+      .doc(`${sale.id}/forUser/${user.uid}`)
       .set({
-        user: this.auth.currentUser.uid,
+        userId: user.uid,
+        userName: user.displayName,
+        timestamp: new Date(),
         quoted,
         quote,
         total

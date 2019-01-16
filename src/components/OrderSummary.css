@@ -1,5 +1,5 @@
-.OrderSummary {
-  overflow: scroll;
+.OrderSummary-wrapper {
+  overflow: auto;
 }
 
 .OrderSummary-details tr td,

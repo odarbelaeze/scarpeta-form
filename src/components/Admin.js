@@ -21,10 +21,6 @@ class Admin extends Component {
     });
   }
 
-  componentWillUnmount() {
-    this.listener();
-  }
-
   render() {
     if (this.state.loading) return <p>Loading...</p>;
     return (

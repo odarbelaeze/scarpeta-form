@@ -36,7 +36,7 @@ class Sale extends Component {
           })
         )
       }),
-      { total: 0, quote: {} }
+      { total: 0, quote: {}, quoted: [] }
     );
     return (
       <div className="Sale">
@@ -44,9 +44,19 @@ class Sale extends Component {
           {moment(this.props.startDate, "X").format("LLL")} &mdash;{" "}
           {moment(this.props.endDate, "X").format("LLL")}
         </h2>
-        <OrderSummary {...totalOrder} />
+        <h3>Consolidado</h3>
+        <OrderSummary
+          {...totalOrder}
+          userName="Todos los clientes"
+          timestamp={this.props.startDate.toDate()}
+        />
+        <h3>Consolidado</h3>
         {this.state.orders.map(order => (
-          <OrderSummary key={order.id} {...order} />
+          <OrderSummary
+            key={order.id}
+            {...order}
+            timestamp={order.timestamp.toDate()}
+          />
         ))}
       </div>
     );

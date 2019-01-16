@@ -54,7 +54,13 @@ class Landing extends Component {
 
   render() {
     if (this.state.loading) return <div>cargando...</div>;
-    if (!!this.state.order) return <OrderSummary {...this.state.order} />;
+    if (!!this.state.order)
+      return (
+        <OrderSummary
+          {...this.state.order}
+          timestamp={this.state.order.timestamp.toDate()}
+        />
+      );
     return <QuoteForm products={PRODUCTS} />;
   }
 }
