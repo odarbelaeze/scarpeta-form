@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import QuoteForm from "./components/QuoteForm";
+import QuoteForm from "./QuoteForm";
 
 const PRODUCTS = `
 - code: tomate

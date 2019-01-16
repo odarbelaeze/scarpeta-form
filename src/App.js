@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/auth/PrivateRoute";
-import Landing from "./Landing";
+import Order from "./components/Order";
 import Login from "./components/auth/Login";
 import { FirebaseContext, UserContext } from "./firebase";
 
@@ -42,8 +42,8 @@ class App extends Component {
             </header>
             <div className="App-container">
               <Switch>
-                <PrivateRoute exact path="/" component={Landing} />
-                <PrivateRoute exact path="/order/" component={Landing} />
+                <PrivateRoute exact path="/" component={Order} />
+                <PrivateRoute exact path="/order/" component={Order} />
                 <Route exact path="/licence/" component={Licence} />
                 <Route path="/login/" component={Login} />
                 <Route component={NotFound} />
