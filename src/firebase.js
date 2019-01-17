@@ -34,7 +34,7 @@ class Firebase {
     return this.auth.signInWithPopup(provider);
   }
 
-  logout() {
+  logOut() {
     return this.auth.signOut();
   }
 

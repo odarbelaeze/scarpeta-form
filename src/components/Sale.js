@@ -50,7 +50,7 @@ class Sale extends Component {
           userName="Todos los clientes"
           timestamp={this.props.startDate.toDate()}
         />
-        <h3>Consolidado</h3>
+        <h3>Pedidos</h3>
         {this.state.orders.map(order => (
           <OrderSummary
             key={order.id}

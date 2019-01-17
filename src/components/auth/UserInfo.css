@@ -1,0 +1,12 @@
+.UserInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.UserInfo > * {
+  margin-right: 1em;
+}
+.UserInfo-photo {
+  height: 2em;
+  border-radius: 2em;
+}
