@@ -4,7 +4,7 @@ import Order from "./Order";
 import { FirebaseContext } from "../firebase";
 
 class FirebaseMock {
-  async currentOrder() {
+  async activeSales() {
     return {
       onSnapshot() {}
     };

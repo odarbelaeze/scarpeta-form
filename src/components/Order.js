@@ -9,20 +9,26 @@ class Landing extends Component {
   state = { loading: true, order: null, sale: null };
 
   componentDidMount() {
-    this.context.currentSale().then(sale => {
-      this.setState({ sale: sale && sale.data(), loading: !!sale }, () => {
-        if (sale) {
-          this.context.currentOrder().then(query => {
-            if (!query) {
-              this.setState({ loading: false });
-            } else {
-              query.onSnapshot(order =>
-                this.setState({
-                  loading: false,
-                  order: !!order ? order.data() : null
-                })
-              );
-            }
+    this.context.activeSales().then(query => {
+      query.onSnapshot(snapshot => {
+        const now = new Date();
+        if (snapshot.empty || snapshot.docs[0].startDate <= now) {
+          this.setState({ loading: false, sale: null, order: null });
+        } else {
+          const sale = snapshot.docs[0];
+          this.setState({ sale: sale.data() }, () => {
+            this.context.currentOrder().then(query => {
+              if (!query) {
+                this.setState({ loading: false });
+              } else {
+                query.onSnapshot(order =>
+                  this.setState({
+                    loading: false,
+                    order: !!order ? order.data() : null
+                  })
+                );
+              }
+            });
           });
         }
       });
