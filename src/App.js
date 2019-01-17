@@ -4,6 +4,7 @@ import PrivateRoute from "./components/auth/PrivateRoute";
 import AdminRoute from "./components/auth/AdminRoute";
 import Order from "./components/Order";
 import Admin from "./components/Admin";
+import NewSale from "./components/NewSale";
 import NotFound from "./components/NotFound";
 import Login from "./components/auth/Login";
 import UserInfo from "./components/auth/UserInfo";
@@ -75,8 +76,8 @@ class App extends Component {
             <div className="App-container App-main">
               <Switch>
                 <PrivateRoute exact path="/" component={Order} />
-                <PrivateRoute exact path="/order/" component={Order} />
                 <AdminRoute exact path="/admin/" component={Admin} />
+                <AdminRoute exact path="/sale/new/" component={NewSale} />
                 <Route exact path="/licence/" component={Licence} />
                 <Route path="/login/" component={Login} />
                 <Route component={NotFound} />

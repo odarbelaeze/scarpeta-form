@@ -33,7 +33,8 @@ class Sale extends Component {
             [code]:
               get(accum, `quote.${code}`, 0.0) +
               parseFloat(get(order, `quote.${code}`, 0.0))
-          })
+          }),
+          {}
         )
       }),
       { total: 0, quote: {}, quoted: [] }

@@ -15,6 +15,7 @@ class UserInfo extends Component {
           Log out
         </Button>
         <AnchorButton href="/admin/">Admin</AnchorButton>
+        <AnchorButton href="/sale/new/">Nueva venta</AnchorButton>
       </ButtonGroup>
     ) : (
       <Button icon="log-out" onClick={this.context.logOut}>

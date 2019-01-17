@@ -57,7 +57,6 @@ class Firebase {
       .limit(1)
       .get();
     if (snapshot.empty || snapshot.docs[0].startDate <= now) {
-      console.error("No hay ventas activas");
       return null;
     }
     return snapshot.docs[0];
@@ -72,6 +71,10 @@ class Firebase {
 
   async ordersBySale(saleId) {
     return this.db.collection(`/orders/${saleId}/forUser/`);
+  }
+
+  async createSale(data) {
+    return await this.db.collection("sales").add(data);
   }
 
   async createOrder({ quoted, quote, total }) {

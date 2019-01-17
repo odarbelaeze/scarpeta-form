@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@blueprintjs/core": "^3.11.0",
+    "@blueprintjs/datetime": "^3.6.0",
     "firebase": "^5.7.3",
     "js-yaml": "^3.12.1",
     "lodash.get": "^4.4.2",
