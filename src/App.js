@@ -34,22 +34,23 @@ class App extends Component {
 
   componentDidMount() {
     this.authListener = this.context.auth.onAuthStateChanged(user => {
-      if (this.adminListener && this.metadataRef) {
-        this.metadataRef.off("value", this.adminListener);
-      }
-      if (user) {
-        this.metadataRef = this.context.rt.ref(
-          "metadata/" + user.uid + "/refreshTime"
-        );
-        this.adminListener = () => user.getIdToken(true);
-        this.metadataRef.on("value", this.adminListener);
-        user.getIdTokenResult().then(token => {
-          this.setState({
-            isAdmin: token && token.claims && token.claims.admin
+      this.setState({ user, isAdmin: false }, () => {
+        if (this.adminListener && this.metadataRef) {
+          this.metadataRef.off("value", this.adminListener);
+        }
+        if (user) {
+          this.metadataRef = this.context.rt.ref(
+            "metadata/" + user.uid + "/refreshTime"
+          );
+          this.adminListener = () => user.getIdToken(true);
+          this.metadataRef.on("value", this.adminListener);
+          user.getIdTokenResult().then(token => {
+            this.setState({
+              isAdmin: token && token.claims && token.claims.admin
+            });
           });
-        });
-      }
-      this.setState({ user });
+        }
+      });
     });
   }
 
@@ -64,7 +65,10 @@ class App extends Component {
           user: this.state.user,
           isAuthenticated: !!this.state.user,
           isAdmin: this.state.isAdmin,
-          logOut: () => this.context.logOut(),
+          logOut: () =>
+            this.context
+              .logOut()
+              .then(() => this.setState({ user: null, isAdmin: false })),
           logIn: () => this.context.loginWithGoogle()
         }}
       >

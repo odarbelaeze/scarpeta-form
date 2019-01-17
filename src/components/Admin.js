@@ -8,7 +8,7 @@ class Admin extends Component {
 
   componentDidMount() {
     this.context.activeSales().then(query => {
-      query.onSnapshot(snapshot => {
+      this.unsuscribe = query.onSnapshot(snapshot => {
         this.setState({
           loading: false,
           sales: snapshot.docs.map(doc => ({
@@ -19,6 +19,10 @@ class Admin extends Component {
         });
       });
     });
+  }
+
+  componentWillUnmount() {
+    if (this.unsuscribe) this.unsuscribe();
   }
 
   render() {

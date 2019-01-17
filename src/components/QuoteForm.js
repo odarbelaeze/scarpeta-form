@@ -65,7 +65,12 @@ class QuoteForm extends Component {
           <strong>Total: {money(this.total())}</strong>
         </div>
         <div className="QuoteForm-buttons">
-          <Button icon="confirm" intent={Intent.SUCCESS} type="submit">
+          <Button
+            icon="confirm"
+            intent={Intent.SUCCESS}
+            type="submit"
+            disabled={this.total() <= 0}
+          >
             Confirmar
           </Button>
         </div>

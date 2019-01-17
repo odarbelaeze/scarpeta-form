@@ -10,7 +10,7 @@ class Landing extends Component {
 
   componentDidMount() {
     this.context.activeSales().then(query => {
-      query.onSnapshot(snapshot => {
+      this.unsubSales = query.onSnapshot(snapshot => {
         const now = new Date();
         if (snapshot.empty || snapshot.docs[0].startDate <= now) {
           this.setState({ loading: false, sale: null, order: null });
@@ -21,7 +21,8 @@ class Landing extends Component {
               if (!query) {
                 this.setState({ loading: false });
               } else {
-                query.onSnapshot(order =>
+                if (this.unsubOrder) this.unsubOrder();
+                this.unsubOrder = query.onSnapshot(order =>
                   this.setState({
                     loading: false,
                     order: !!order ? order.data() : null
@@ -33,6 +34,11 @@ class Landing extends Component {
         }
       });
     });
+  }
+
+  componentWillUnmount() {
+    if (this.unsubOrder) this.unsubOrder();
+    if (this.unsubSales) this.unsubSales();
   }
 
   render() {

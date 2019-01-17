@@ -12,13 +12,17 @@ class Sale extends Component {
 
   componentDidMount() {
     this.context.ordersBySale(this.props.id).then(query => {
-      query.onSnapshot(snapshot =>
+      this.unsubOrders = query.onSnapshot(snapshot =>
         this.setState({
           loading: false,
           orders: snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
         })
       );
     });
+  }
+
+  componentWillUnmount() {
+    if (this.unsubOrders) this.unsubOrders();
   }
 
   render() {
