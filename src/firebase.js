@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import app from "firebase/app";
+import moment from "moment";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/database";
@@ -39,10 +40,10 @@ class Firebase {
   }
 
   async activeSales() {
-    const now = new Date();
+    const prevDay = moment().day(-1);
     return this.db
       .collection("sales")
-      .where("endDate", ">=", now)
+      .where("endDate", ">=", prevDay.toDate())
       .orderBy("endDate")
       .orderBy("startDate");
   }
