@@ -64,7 +64,7 @@ class Sale extends Component {
               onDelete={() =>
                 this.context.deleteOrder({
                   saleId: this.props.id,
-                  orderId: order.id
+                  userId: order.id
                 })
               }
             />

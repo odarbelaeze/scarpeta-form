@@ -93,9 +93,8 @@ class Firebase {
       });
   }
 
-  async deleteOrder({ saleId, orderId }) {
-    console.log(saleId, orderId);
-    this.db.doc(`/orders/${saleId}/forUser/${orderId}`).delete();
+  async deleteOrder({ saleId, userId }) {
+    this.db.doc(`/orders/${saleId}/forUser/${userId}`).delete();
   }
 }
 
