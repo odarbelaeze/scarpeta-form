@@ -1,17 +1,31 @@
 {
   "indexes": [
     {
-      "collectionId": "sales",
+      "collectionGroup": "sales",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "startDate", "mode": "ASCENDING" },
-        { "fieldPath": "endDate", "mode": "ASCENDING" }
+        {
+          "fieldPath": "endDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "startDate",
+          "order": "ASCENDING"
+        }
       ]
     },
     {
-      "collectionId": "sales",
+      "collectionGroup": "sales",
+      "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "endDate", "mode": "ASCENDING" },
-        { "fieldPath": "startDate", "mode": "ASCENDING" }
+        {
+          "fieldPath": "startDate",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "endDate",
+          "order": "ASCENDING"
+        }
       ]
     }
   ],
