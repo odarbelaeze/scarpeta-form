@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { FirebaseContext } from "../firebase";
 import OrderSummary from "./OrderSummary";
 import moment from "moment";
@@ -57,11 +57,19 @@ class Sale extends Component {
         />
         <h3>Pedidos</h3>
         {this.state.orders.map(order => (
-          <OrderSummary
-            key={order.id}
-            {...order}
-            timestamp={order.timestamp.toDate()}
-          />
+          <Fragment key={order.id}>
+            <OrderSummary
+              {...order}
+              timestamp={order.timestamp.toDate()}
+              onDelete={() =>
+                this.context.deleteOrder({
+                  saleId: this.props.id,
+                  orderId: order.id
+                })
+              }
+            />
+            <hr />
+          </Fragment>
         ))}
       </div>
     );

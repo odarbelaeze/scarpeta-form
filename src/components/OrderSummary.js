@@ -1,11 +1,19 @@
 import React from "react";
 import { HTMLTable } from "@blueprintjs/core";
 import { money } from "../utils";
+import { Button } from "@blueprintjs/core";
 import moment from "moment";
 import "moment/locale/es-us";
 import "./OrderSummary.css";
 
-const OrderSummary = ({ quoted, quote, total, userName, timestamp }) => {
+const OrderSummary = ({
+  quoted,
+  quote,
+  total,
+  userName,
+  timestamp,
+  onDelete
+}) => {
   const details = quoted.reduce((accum, product) => {
     return [
       ...accum,
@@ -30,6 +38,11 @@ const OrderSummary = ({ quoted, quote, total, userName, timestamp }) => {
     <div className="OrderSummary">
       <p>Cliente: {userName}</p>
       <p>Creado el: {moment(timestamp).format("LLL")}</p>
+      {onDelete && (
+        <Button onClick={onDelete} icon="delete">
+          Borrar
+        </Button>
+      )}
       <div className="OrderSummary-wrapper">
         <HTMLTable className="OrderSummary-details" bordered>
           <thead>

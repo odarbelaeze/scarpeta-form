@@ -92,6 +92,11 @@ class Firebase {
         total
       });
   }
+
+  async deleteOrder({ saleId, orderId }) {
+    console.log(saleId, orderId);
+    this.db.doc(`/orders/${saleId}/forUser/${orderId}`).delete();
+  }
 }
 
 const FirebaseContext = createContext(null);
