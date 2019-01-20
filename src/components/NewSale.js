@@ -37,7 +37,7 @@ const PRODUCTS = `
     - code: naranja-segunda
       name: Segunda
       price: 40000
-`;
+`.trim();
 
 class NewSale extends Component {
   static contextType = FirebaseContext;
@@ -46,14 +46,13 @@ class NewSale extends Component {
     dateRange: [
       moment()
         .startOf("day")
-        .hour(14)
+        .hour(3)
         .toDate(),
       moment()
-        .startOf("day")
-        .hour(23)
+        .endOf("day")
         .toDate()
     ],
-    products: PRODUCTS.trim(),
+    products: "",
     created: false
   };
 
@@ -102,6 +101,7 @@ class NewSale extends Component {
               className="NewSale-textarea"
               id="products-area"
               value={this.state.products}
+              placeholder={PRODUCTS}
               onChange={event =>
                 this.setState({ products: event.target.value })
               }
