@@ -1,3 +1,4 @@
+
 service cloud.firestore {
   match /databases/{database}/documents {
     match /sales/{saleId} {
@@ -6,11 +7,11 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
-    match /orders/{saleId}/forUser/{userId} {
+    match /orders/{orderId} {
       allow read: if request.auth != null
-                  && (request.auth.token.admin || request.auth.uid == userId)
+                  && (request.auth.token.admin || resource.data.userId == request.auth.uid)
       allow write: if request.auth != null
-                   && request.auth.uid == userId
+                   && request.auth.uid == request.resource.data.userId
                    && request.auth.token.name == request.resource.data.userName
       allow delete: if request.auth != null
                     && request.auth.token.admin

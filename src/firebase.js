@@ -39,63 +39,53 @@ class Firebase {
     return this.auth.signOut();
   }
 
-  async activeSales() {
-    const prevDay = moment().day(-1);
+  async currentSale() {
     return this.db
       .collection("sales")
-      .where("endDate", ">=", prevDay.toDate())
-      .orderBy("endDate")
-      .orderBy("startDate");
-  }
-
-  async currentSale() {
-    const now = new Date();
-    const snapshot = await this.db
-      .collection("sales")
-      .where("endDate", ">=", now)
-      .orderBy("endDate")
-      .orderBy("startDate")
-      .limit(1)
-      .get();
-    if (snapshot.empty || snapshot.docs[0].startDate <= now) {
-      return null;
-    }
-    return snapshot.docs[0];
+      .orderBy("timestamp")
+      .limit(1);
   }
 
   async currentOrder() {
     const user = this.auth.currentUser.uid;
-    const sale = await this.currentSale();
-    if (!sale) return null;
-    return this.db.collection("orders").doc(`${sale.id}/forUser/${user}`);
+    const dayStart = moment()
+      .startOf("day")
+      .toDate();
+    return this.db
+      .collection(`orders`)
+      .where("userId", "==", user)
+      .where("timestamp", ">", dayStart)
+      .limit(1);
   }
 
-  async ordersBySale(saleId) {
-    return this.db.collection(`/orders/${saleId}/forUser/`);
+  async ordersBetween({ startDate, endDate }) {
+    return this.db
+      .collection(`/orders/`)
+      .where("timestamp", ">", startDate)
+      .where("timestamp", "<=", endDate);
   }
 
-  async createSale(data) {
-    return await this.db.collection("sales").add(data);
+  async createSale({ products }) {
+    return await this.db.collection("sales").add({
+      products,
+      timestamp: moment().toDate()
+    });
   }
 
   async createOrder({ quoted, quote, total }) {
     const user = this.auth.currentUser;
-    const sale = await this.currentSale();
-    return await this.db
-      .collection("orders")
-      .doc(`${sale.id}/forUser/${user.uid}`)
-      .set({
-        userId: user.uid,
-        userName: user.displayName,
-        timestamp: new Date(),
-        quoted,
-        quote,
-        total
-      });
+    return await this.db.collection("orders").add({
+      userId: user.uid,
+      userName: user.displayName,
+      timestamp: moment().toDate(),
+      quoted,
+      quote,
+      total
+    });
   }
 
-  async deleteOrder({ saleId, userId }) {
-    this.db.doc(`/orders/${saleId}/forUser/${userId}`).delete();
+  async deleteOrder({ orderId }) {
+    this.db.doc(`/orders/${orderId}`).delete();
   }
 }
 

@@ -1,37 +1,18 @@
 import React, { Component } from "react";
-import { FirebaseContext } from "../firebase";
 import Sale from "./Sale";
+import moment from "moment";
 
 class Admin extends Component {
-  static contextType = FirebaseContext;
-  state = { sales: [], loading: true };
-
-  componentDidMount() {
-    this.context.activeSales().then(query => {
-      this.unsuscribe = query.onSnapshot(snapshot => {
-        this.setState({
-          loading: false,
-          sales: snapshot.docs.map(doc => ({
-            id: doc.ref.id,
-            path: doc.ref.path,
-            ...doc.data()
-          }))
-        });
-      });
-    });
-  }
-
-  componentWillUnmount() {
-    if (this.unsuscribe) this.unsuscribe();
-  }
+  state = {
+    startDate: moment().startOf("day"),
+    endDate: moment().endOf("day")
+  };
 
   render() {
     if (this.state.loading) return <p>Loading...</p>;
     return (
       <div className="Admin">
-        {this.state.sales.map(sale => (
-          <Sale key={sale.id} {...sale} />
-        ))}
+        <Sale {...this.state} />
       </div>
     );
   }

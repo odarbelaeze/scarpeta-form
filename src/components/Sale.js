@@ -11,14 +11,19 @@ class Sale extends Component {
   state = { loading: true, orders: [] };
 
   componentDidMount() {
-    this.context.ordersBySale(this.props.id).then(query => {
-      this.unsubOrders = query.onSnapshot(snapshot =>
-        this.setState({
-          loading: false,
-          orders: snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-        })
-      );
-    });
+    this.context
+      .ordersBetween({
+        startDate: this.props.startDate.toDate(),
+        endDate: this.props.endDate.toDate()
+      })
+      .then(query => {
+        this.unsubOrders = query.onSnapshot(snapshot =>
+          this.setState({
+            loading: false,
+            orders: snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+          })
+        );
+      });
   }
 
   componentWillUnmount() {
@@ -63,8 +68,7 @@ class Sale extends Component {
               timestamp={order.timestamp.toDate()}
               onDelete={() =>
                 this.context.deleteOrder({
-                  saleId: this.props.id,
-                  userId: order.id
+                  orderId: order.id
                 })
               }
             />

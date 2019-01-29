@@ -9,26 +9,24 @@ class Landing extends Component {
   state = { loading: true, order: null, sale: null };
 
   componentDidMount() {
-    this.context.activeSales().then(query => {
-      this.unsubSales = query.onSnapshot(snapshot => {
-        const now = new Date();
-        if (snapshot.empty || snapshot.docs[0].startDate <= now) {
-          this.setState({ loading: false, sale: null, order: null });
+    this.context.currentOrder().then(query => {
+      if (this.unsubOrder) this.unsubOrder();
+      this.unsubOrder = query.onSnapshot(orders => {
+        const order = orders.docs[0];
+        if (order) {
+          this.setState({
+            loading: false,
+            order: !!order ? order.data() : null
+          });
         } else {
-          const sale = snapshot.docs[0];
-          this.setState({ sale: sale.data() }, () => {
-            this.context.currentOrder().then(query => {
-              if (!query) {
-                this.setState({ loading: false });
-              } else {
-                if (this.unsubOrder) this.unsubOrder();
-                this.unsubOrder = query.onSnapshot(order =>
-                  this.setState({
-                    loading: false,
-                    order: !!order ? order.data() : null
-                  })
-                );
-              }
+          this.context.currentSale().then(query => {
+            if (this.unsubSale) this.unsubSale();
+            this.unsubSale = query.onSnapshot(sales => {
+              const sale = sales.docs[0];
+              this.setState({
+                loading: false,
+                sale: !!sale ? sale.data() : null
+              });
             });
           });
         }
@@ -38,7 +36,7 @@ class Landing extends Component {
 
   componentWillUnmount() {
     if (this.unsubOrder) this.unsubOrder();
-    if (this.unsubSales) this.unsubSales();
+    if (this.unsubSale) this.unsubSale();
   }
 
   render() {

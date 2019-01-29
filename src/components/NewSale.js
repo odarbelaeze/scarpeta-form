@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { FormGroup, TextArea, Button, Intent } from "@blueprintjs/core";
-import { DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
 import { FirebaseContext } from "../firebase";
 import { Redirect } from "react-router-dom";
 import { safeLoad } from "js-yaml";
-import moment from "moment";
 
 const PRODUCTS = `
 - code: tomate
@@ -43,15 +41,6 @@ class NewSale extends Component {
   static contextType = FirebaseContext;
 
   state = {
-    dateRange: [
-      moment()
-        .startOf("day")
-        .hour(3)
-        .toDate(),
-      moment()
-        .endOf("day")
-        .toDate()
-    ],
     products: "",
     created: false
   };
@@ -68,10 +57,9 @@ class NewSale extends Component {
   handleSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
-    const [startDate, endDate] = this.state.dateRange;
     const { products } = this.state;
     this.context
-      .createSale({ startDate, endDate, products })
+      .createSale({ products })
       .then(this.setState({ created: true }));
   }
 
@@ -80,19 +68,8 @@ class NewSale extends Component {
     return (
       <div className="NewSale">
         <form className="NewSale-form" onSubmit={this.handleSubmit.bind(this)}>
-          <FormGroup label="Fechas de inicio y fin" labelFor="date-range">
-            <DateRangeInput
-              id="date-range"
-              timePrecision={TimePrecision.MINUTE}
-              formatDate={date => moment(date).format("YYYY-MM-DD HH:mm")}
-              parseDate={str => moment(str, "YYYY-MM-DD HH:mm").toDate()}
-              value={this.state.dateRange}
-              onChange={dateRange => this.setState({ dateRange })}
-              allowSingleDayRange
-            />
-          </FormGroup>
           <FormGroup
-            label="Productos"
+            label="Actualizar Productos"
             labelFor="products-area"
             helperText="Mantenga el formato estrictamente"
           >
