@@ -11,10 +11,26 @@ class Sale extends Component {
   state = { loading: true, orders: [] };
 
   componentDidMount() {
+    this.listenForOrders(this.props);
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState(
+      {
+        loading: true,
+        orders: []
+      },
+      () => {
+        this.listenForOrders(newProps);
+      }
+    );
+  }
+
+  listenForOrders(props) {
     this.context
       .ordersBetween({
-        startDate: this.props.startDate.toDate(),
-        endDate: this.props.endDate.toDate()
+        startDate: props.startDate.toDate(),
+        endDate: props.endDate.toDate()
       })
       .then(query => {
         this.unsubOrders = query.onSnapshot(snapshot =>
