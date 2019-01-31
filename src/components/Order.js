@@ -23,6 +23,7 @@ class Landing extends Component {
             if (this.unsubSale) this.unsubSale();
             this.unsubSale = query.onSnapshot(sales => {
               const sale = sales.docs[0];
+              console.log("sale");
               this.setState({
                 loading: false,
                 sale: !!sale ? sale.data() : null

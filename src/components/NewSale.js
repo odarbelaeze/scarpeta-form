@@ -42,8 +42,24 @@ class NewSale extends Component {
 
   state = {
     products: "",
-    created: false
+    created: false,
+    loading: true
   };
+
+  componentDidMount() {
+    this.context.currentSale().then(query => {
+      this.unsuscribe = query.onSnapshot(sales => {
+        const sale = sales.docs[0];
+        this.setState(
+          {
+            loading: false,
+            products: sale ? sale.get("products") : ""
+          },
+          this.unsuscribe.bind(this)
+        );
+      });
+    });
+  }
 
   validProducts() {
     try {
@@ -64,6 +80,7 @@ class NewSale extends Component {
   }
 
   render() {
+    if (this.state.loading) return <div>loading...</div>;
     if (this.state.created) return <Redirect to="/" />;
     return (
       <div className="NewSale">

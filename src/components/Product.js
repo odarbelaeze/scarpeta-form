@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FormGroup, NumericInput } from "@blueprintjs/core";
 import { money } from "../utils";
+import md5 from "md5";
 import "./Product.css";
 
 class Product extends Component {
@@ -21,7 +22,7 @@ class Product extends Component {
             <FormGroup
               label={`${variation.name} (${money(variation.price)})`}
               labelFor={variation.code}
-              key={variation.code}
+              key={md5(variation.code + variation.name)}
             >
               <NumericInput
                 id={variation.code}
@@ -44,7 +45,7 @@ class Product extends Component {
       {
         quote: {
           ...this.state.quote,
-          [code]: value
+          [code]: value || 0
         }
       },
       () => {

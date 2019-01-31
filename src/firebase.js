@@ -1,6 +1,7 @@
 import { createContext } from "react";
 import app from "firebase/app";
 import moment from "moment";
+import pickBy from "lodash.pickby";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/database";
@@ -42,7 +43,7 @@ class Firebase {
   async currentSale() {
     return this.db
       .collection("sales")
-      .orderBy("timestamp")
+      .orderBy("timestamp", "desc")
       .limit(1);
   }
 
@@ -79,7 +80,7 @@ class Firebase {
       userName: user.displayName,
       timestamp: moment().toDate(),
       quoted,
-      quote,
+      quote: pickBy(quote, value => value && value > 0),
       total
     });
   }

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Intent } from "@blueprintjs/core";
 import PropTypes from "prop-types";
 import yaml from "js-yaml";
+import md5 from "md5";
 
 import { FirebaseContext } from "../firebase";
 import Product from "./Product";
@@ -55,7 +56,7 @@ class QuoteForm extends Component {
         <div className="QuoteForm-products">
           {products.map(product => (
             <Product
-              key={product.code}
+              key={md5(product.code + product.name)}
               {...product}
               onValueChange={this.updateQuote.bind(this)}
             />
