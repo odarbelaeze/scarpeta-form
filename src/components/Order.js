@@ -16,14 +16,13 @@ class Landing extends Component {
         if (order) {
           this.setState({
             loading: false,
-            order: !!order ? order.data() : null
+            order: order.data()
           });
         } else {
           this.context.currentSale().then(query => {
             if (this.unsubSale) this.unsubSale();
             this.unsubSale = query.onSnapshot(sales => {
               const sale = sales.docs[0];
-              console.log("sale");
               this.setState({
                 loading: false,
                 sale: !!sale ? sale.data() : null
@@ -42,8 +41,6 @@ class Landing extends Component {
 
   render() {
     if (this.state.loading) return <div>cargando...</div>;
-    if (!this.state.sale)
-      return <div>No estamos tomando ordenes en el momento...</div>;
     if (!!this.state.order)
       return (
         <OrderSummary
@@ -51,6 +48,8 @@ class Landing extends Component {
           timestamp={this.state.order.timestamp.toDate()}
         />
       );
+    if (!this.state.sale)
+      return <div>No estamos tomando ordenes en el momento...</div>;
     return <QuoteForm products={this.state.sale.products} />;
   }
 }
